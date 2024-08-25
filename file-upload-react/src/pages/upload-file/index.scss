@@ -1,0 +1,27 @@
+.upload-file-wrap {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  padding: 16px;
+  width: 400px;
+  height: 200px;
+  margin: 100px;
+  border: 1px #666 solid;
+
+  .btn-list {
+    margin-top: 16px;
+    display: flex;
+    column-gap: 12px;
+  }
+}
+.custom-loading {
+  height: 100%;
+  .ant-spin-container {
+    &::after {
+      background: none;
+    }
+  }
+  .ant-spin-text {
+    text-shadow: none !important;
+  }
+}
