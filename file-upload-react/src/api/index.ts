@@ -70,7 +70,7 @@ export const uploadChunk = async (params: UploadTask) => {
     const cancelToken = Axios.CancelToken.source();
     onPushToken && onPushToken(cancelToken);
 
-    await axios.post('/api/file/save', formData, {
+    await axios.post('/fileApi/file/save', formData, {
       onUploadProgress: processData => {
         onTick && onTick(index, processData.loaded);
       },
@@ -87,14 +87,14 @@ export const uploadChunk = async (params: UploadTask) => {
 // 查询文件
 export const findFile = async (params: FindFileParams) => {
   const { hash } = params;
-  const res = await axios.post('/api/file/check', { hash });
+  const res = await axios.post('/fileApi/file/check', { hash });
   return res?.data?.data;
 };
 
 // 合并文件
 export const mergeFile = async (params: MergeFileParams) => {
   const { hash } = params;
-  const res = await axios.post('/api/file/merge', { hash });
+  const res = await axios.post('/fileApi/file/merge', { hash });
   return res?.data?.data;
 };
 
