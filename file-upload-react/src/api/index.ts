@@ -2,7 +2,7 @@ import Axios, { CancelTokenSource } from 'axios';
 
 const axios = Axios.create({
   // 正式项目中，需要根据环境变量赋予实际地址
-  baseURL: 'http://localhost:8080',
+  baseURL: import.meta.env.VITE_BASE_URL,
 });
 
 interface Chunk {
