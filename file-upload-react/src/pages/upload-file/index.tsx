@@ -2,9 +2,8 @@ import { useRef, useState } from 'react';
 import { Button, message, Progress, Spin } from 'antd';
 import dayjs from 'dayjs';
 import { CancelTokenSource } from 'axios';
-import { splitFile, calHashSparkMD5 } from '@/utils/tools';
+import { splitFile, splitFile2, calHashSparkMD5 } from '@/utils/tools';
 import { calHash } from '@/utils/hash';
-import { compressFile } from '@/utils/compress';
 import { uploadChunks, findFile, mergeFile } from '@/api';
 import './index.scss';
 
@@ -42,6 +41,7 @@ export default function UploadFile() {
     // 计算当前进度
     const currentTotal = uploaded.reduce((a, c) => a + c, 0);
     const _progress = Math.round((currentTotal / total) * 100);
+    console.log('_progress xxxx', _progress, progress);
     // 如果progress已经存在，说明是暂停后恢复上传，这个时候保留当前进度
     if (progress < _progress) {
       setProgress(_progress);
@@ -77,15 +77,11 @@ export default function UploadFile() {
     setLoading(true);
 
     try {
-      // 对文件进行压缩
-      console.log('压缩前', file.current.files[0].size);
-      const targetFile = await compressFile(file.current.files[0]);
-      console.log('压缩后', targetFile.size);
+      const targetFile = file.current.files[0];
       // 记录文件的size
       fileSize.current.total = targetFile.size;
-
-      // 文件切片
-      const chunkList = splitFile(targetFile);
+      // 原始文件切片，用于计算hash值
+      const chunkList = await splitFile(targetFile);
 
       // 方式一: spark-md5
       // const hash = await calHashSparkMD5(targetFile);

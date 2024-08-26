@@ -1,4 +1,6 @@
 import Axios, { CancelTokenSource } from 'axios';
+import { gzipSync } from 'fflate';
+import { convertToBlob } from '@/utils/tools';
 
 const axios = Axios.create({
   // 正式项目中，需要根据环境变量赋予实际地址
@@ -61,6 +63,16 @@ export const uploadChunk = async (params: UploadTask) => {
     return;
   }
 
+  // const reader = new FileReader();
+
+  // reader.readAsArrayBuffer(chunk);
+  // const compressedChunk = await new Promise<Uint8Array>(resolve => {
+  //   reader.onload = () => {
+  //     const compressed = gzipSync(new Uint8Array(reader.result as ArrayBuffer));
+  //     resolve(compressed);
+  //   };
+  // });
+
   try {
     const formData = new FormData();
     formData.append('hash', hash);
@@ -70,7 +82,7 @@ export const uploadChunk = async (params: UploadTask) => {
     const cancelToken = Axios.CancelToken.source();
     onPushToken && onPushToken(cancelToken);
 
-    await axios.post('/fileApi/file/save', formData, {
+    await axios.post('/api/file/save', formData, {
       onUploadProgress: processData => {
         onTick && onTick(index, processData.loaded);
       },
@@ -86,15 +98,15 @@ export const uploadChunk = async (params: UploadTask) => {
 
 // 查询文件
 export const findFile = async (params: FindFileParams) => {
-  const { hash } = params;
-  const res = await axios.post('/fileApi/file/check', { hash });
+  const { hash, index } = params;
+  const res = await axios.post('/api/file/check', { hash, index });
   return res?.data?.data;
 };
 
 // 合并文件
 export const mergeFile = async (params: MergeFileParams) => {
   const { hash } = params;
-  const res = await axios.post('/fileApi/file/merge', { hash });
+  const res = await axios.post('/api/file/merge', { hash });
   return res?.data?.data;
 };
 

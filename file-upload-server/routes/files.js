@@ -4,7 +4,7 @@ const findFileController = require('../controller/find');
 const saveChunkController = require('../controller/file');
 const mergeFileController = require('../controller/merge');
 
-router.prefix('/fileApi');
+router.prefix('/api');
 
 router.get('/file/test', async (ctx, next) => {
   ctx.body = {
