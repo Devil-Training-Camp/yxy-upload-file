@@ -14,8 +14,8 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        // target: 'http://localhost:8001',
-        target: 'http://120.26.123.78:8001',
+        target: 'http://localhost:8001', // 本地代理
+        // target: 'http://120.26.123.78:8001', // 云服务器地址
         changeOrigin: true,
       }
     }
